@@ -53,7 +53,7 @@
 ---@field author fun(self: GitTarget): string
 ---@field parent fun(self: GitTarget): GitTarget?
 
----@alias CommitHook fun(target: GitTarget): (string | GitTarget)
+---@alias CommitHook fun(target: GitTarget, plugin: LazyPlugin): (string | GitTarget)
 
 ---@class LazyPluginRef
 ---@field branch? string

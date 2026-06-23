@@ -553,8 +553,9 @@ If you want to install a specific revision of a plugin, you can use `commit`,
 
 The `commit` and `defaults.commit` options can be a string or a `CommitHook`,
 which is a function that receives a `GitTarget` object describing the commit
-that would otherwise be selected (tag, version, or latest on the branch).
-The function returns one of:
+that would otherwise be selected (tag, version, or latest on the branch), as
+well as the `LazyPlugin` the hook is being invoked for. The function returns
+one of:
 
 - a `string` to select a commit by its hash string
 - a `GitTarget` (e.g. the target it received) to use that target's commit
@@ -697,8 +698,9 @@ will be added to the plugin’s spec.
         -- when running inside vscode for example
         cond = nil, ---@type boolean|fun(self:LazyPlugin):boolean|nil
         -- Set this to a function if you want to override the target commit. Receives a GitTarget
-        -- describing the commit that would otherwise be selected (tag, version, or latest on branch).
-        -- It should return a commit hash string or a GitTarget.
+        -- describing the commit that would otherwise be selected (tag, version, or latest on branch),
+        -- and the LazyPlugin the hook is being invoked for. It should return a commit hash string
+        -- or a GitTarget.
         commit = nil, ---@type CommitHook?
       },
       -- leave nil when passing the spec as the first argument to setup()

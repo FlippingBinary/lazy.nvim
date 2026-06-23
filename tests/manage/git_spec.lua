@@ -116,7 +116,7 @@ describe("git get_target", function()
     ---@type LazyPlugin
     local plugin = with_dir({
       dir = repo,
-      commit = function(target)
+      commit = function(target, _)
         received = target
         return returned
       end,
@@ -136,7 +136,7 @@ describe("git get_target", function()
     ---@type LazyPlugin
     local plugin = with_dir({
       dir = repo,
-      commit = function(target)
+      commit = function(target, _)
         received = target
         return Git.target(repo, { commit = picked, branch = "main" })
       end,
@@ -186,7 +186,7 @@ describe("git get_target", function()
     local head = git_commit(repo, "first")
     local returned = "abcdefabcdefabcdefabcdefabcdefabcdefabcd"
     local received ---@type GitTarget?
-    Config.options.defaults.commit = function(target)
+    Config.options.defaults.commit = function(target, _)
       received = target
       return returned
     end
@@ -211,7 +211,7 @@ describe("git get_target", function()
     local tag_commit = git_tag(repo, "v1.0.0")
     local returned = "abcdefabcdefabcdefabcdefabcdefabcdefabcd"
     local received ---@type GitTarget?
-    Config.options.defaults.commit = function(target)
+    Config.options.defaults.commit = function(target, _)
       received = target
       return returned
     end
@@ -362,7 +362,8 @@ describe("git commit hook: restrict to human commits", function()
   local robot_author = "GitHub Copilot <copilot@github.com>"
 
   ---@param target GitTarget
-  local function human_commit(target)
+  ---@param plugin LazyPlugin
+  local function human_commit(target, _)
     ---@type GitTarget?
     local curr = target
     while curr and curr:author():match("copilot") do
@@ -422,7 +423,8 @@ describe("git commit hook: restrict to cool commits", function()
   local repo
 
   ---@param target GitTarget
-  local function cool_commit(target)
+  ---@param plugin LazyPlugin
+  local function cool_commit(target, _)
     ---@type GitTarget?
     local curr = target
     while curr and curr:age() < 7 do
@@ -490,7 +492,8 @@ describe("git commit hook: restrict to stable commits", function()
   local repo
 
   ---@param target GitTarget
-  local function stable_commit(target)
+  ---@param plugin LazyPlugin
+  local function stable_commit(target, _)
     local last_age = 0
     ---@type GitTarget?
     local curr = target

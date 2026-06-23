@@ -249,7 +249,7 @@ function M.get_target(plugin)
   end
 
   local starting_target = M.target(plugin.dir, target_info)
-  local final_target = commit_hook(starting_target)
+  local final_target = commit_hook(starting_target, plugin)
 
   if type(final_target) == "string" then
     target_info.commit = final_target
